@@ -1,0 +1,19 @@
+{
+  "people": [
+    {
+      "name": "Nate",
+      "number": "1234567890",
+      "avoids": []
+    },
+    {
+      "name": "Lori",
+      "number": "1234567890",
+      "avoids": ["Nate"]
+    },
+    {
+      "name": "Ben",
+      "number": "1234567890",
+      "avoids": []
+    }
+  ]
+}
