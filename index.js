@@ -1,7 +1,9 @@
 var config = require('./config.json');
-var twilio = require('twilio')(config.twilioKey, config.twilioSecret);
+var Twilio = require('twilio');
 var _ = require('lodash');
 var people = require('./people.json').people;
+
+var twilio = new Twilio(config.twilioKey, config.twilioSecret);
 
 function getSantas() {
   var recipients = _.shuffle(people);
@@ -24,16 +26,17 @@ function getSantas() {
 }
 
 function sendSantaMessage(santa) {
-  twilio.sendMessage({
+  twilio.messages.create({
     to: santa.number,
     from: config.twilioNumber,
-    body: 'For the Bailey 2017 Secret Turkey you\'re getting a $15 gift for... ' + santa.recipient + '!',
+    // body: 'Testing again... respond to this if you get it.',
+    body: `Hey. Get a 20 to 25 dollar gift for ${santa.recipient}. (2019D)`,
   }, function(err, res) {
     if (err) {
-      console.warn('Error received from Twilio', err);
-    } else {
-      console.log('Twilio message sent successfully');
+      return console.warn('Error received from Twilio', err);
     }
+
+    console.log('Twilio message sent successfully', res.sid);
   });
 }
 
@@ -44,7 +47,7 @@ if(noDuplicates) {
   console.log('Success!');
   console.log(_.map(santas, 'recipient'));
   santas.forEach(function (santa) {
-    // sendSantaMessage(santa);
+    sendSantaMessage(santa);
   });
 } else {
   console.log('FOUND DUPLICATE RECIPIENTS, TRY AGAIN');
